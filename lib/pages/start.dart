@@ -59,15 +59,15 @@ class _AnimState extends State<Anim> with TickerProviderStateMixin {
                                 .listen((User? user) {
                               if (user == null) {
                                 Navigator.push(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => Log()),
-                                );
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Log()));
+                            
                               } else {
                                 Navigator.push(
-                                  context,  
-                                  MaterialPageRoute(
-                                      builder: (context) => Dashboard()),
-                                );
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Dashboard()));
                               }
                             }));
                     }),

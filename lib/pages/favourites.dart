@@ -2,8 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shoppingapp/Dashboard.dart';
 import 'package:shoppingapp/pages/cart.dart';
+
+
 
 double sum = 0;
 
@@ -15,6 +18,10 @@ class Fav extends StatefulWidget {
 }
 
 class _CartState extends State<Fav> {
+  double i = 0;
+
+
+
   // Future<double> total(double i) async {
   //      var uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -33,11 +40,30 @@ class _CartState extends State<Fav> {
   //     return i;
 
   //   }
-  // @override
-  // void initState() {
+  @override
+  void initState() {
 
-  // super.initState();
-  //    var uid = FirebaseAuth.instance.currentUser!.uid;
+  super.initState();
+      var uid = FirebaseAuth.instance.currentUser!.uid;
+ i = 0;
+
+
+  FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Favourites')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      querySnapshot.docs.forEach((doc) {
+        
+        setState(() {
+
+          i = i + 1;
+          
+        });
+      });
+        });
+ 
   //  FirebaseFirestore.instance.collection('Users').doc(uid).collection('Total').doc('Total').get().then((DocumentSnapshot snap){
 
   //     if (snap.exists) {
@@ -69,23 +95,21 @@ class _CartState extends State<Fav> {
 
   //   });
 
-  //   }
+    }
+
+       final Stream<QuerySnapshot> fav_items = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Favourites')
+        .snapshots();
 
   @override
   Widget build(BuildContext context) {
+
+    
     var uid = FirebaseAuth.instance.currentUser!.uid;
 
-    // double i = 0;
-
-    // FirebaseFirestore.instance
-    //     .collection('Users')
-    //     .doc(uid)
-    //     .collection('Cart')
-    //     .get()
-    //     .then((QuerySnapshot querySnapshot) {
-    //   querySnapshot.docs.forEach((doc) {
-    //     i = i + doc['Price'];
-    //   });
+    
     //   FirebaseFirestore.instance
     //       .collection('Users')
     //       .doc(uid)
@@ -105,11 +129,7 @@ class _CartState extends State<Fav> {
 
     // CollectionReference user_collection = FirebaseFirestore.instance.collection('Users');
 
-    final Stream<QuerySnapshot> fav_items = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Favourites')
-        .snapshots();
+ 
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -136,10 +156,17 @@ class _CartState extends State<Fav> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            
+            return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
           }
 
-          if (snapshot.hasData) {
+          if (snapshot.data != null) {
+
+            
+
+   
+
+      if(i!=0){
             return new ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
                 Map<String, dynamic> data =
@@ -181,6 +208,7 @@ class _CartState extends State<Fav> {
                                   
                                       setState(() {
                                         sum = sum - data['Price'];
+                                        i= i-1;
                                       });
                                     },
                                     icon: Icon(Icons.delete)),
@@ -205,6 +233,10 @@ class _CartState extends State<Fav> {
                                           .collection('Favourites')
                                           .doc(docId)
                                           .delete();
+
+                                          setState(() {
+                                            i= i-1;
+                                          });
                                     },
                                     icon: Icon(
                                       Icons.add_shopping_cart,
@@ -223,8 +255,14 @@ class _CartState extends State<Fav> {
                 );
               }).toList(),
             );
+      }
+
+      return Center(child: Text('No favourites'));
+
+
+      
           }
-          return Center(child: Text('No Items in cart'));
+          return Center(child: Text('No favourites'));
         },
       ),
       // bottomNavigationBar: BottomAppBar(

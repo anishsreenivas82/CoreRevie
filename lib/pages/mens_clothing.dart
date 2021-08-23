@@ -9,9 +9,14 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import 'package:http/http.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shoppingapp/pages/cart.dart';
 import 'package:shoppingapp/pages/favourites.dart';
+
 CollectionReference user_collection = FirebaseFirestore.instance.collection('Users');
+
+
+
 
 List men = [];
 Future wait(int seconds) {
@@ -193,14 +198,14 @@ class _HomeState extends State<Men> {
                                                           .set({
                                                         'Name': men[index]
                                                             ['title'],
-
+                            
                                                           'Price':men[index]['price'],
                                                           'Image':men[index]['image'],
-
-
-
+                            
+                            
+                            
                                                       });
-
+                            
                                                       Fluttertoast.showToast(
                               msg: "Added To Cart",
                               toastLength: Toast.LENGTH_LONG,
@@ -219,7 +224,7 @@ class _HomeState extends State<Men> {
                                                 ),
                                                 IconButton(
                                                     onPressed: () {
-
+                            
                                                       int id= men[index]["id"];
                                                     final user = FirebaseAuth.instance.currentUser!;
                                                     var uid = user.uid;
@@ -267,7 +272,7 @@ class _HomeState extends State<Men> {
               ),
             );
           }
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
+          return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
         });
   }
 }

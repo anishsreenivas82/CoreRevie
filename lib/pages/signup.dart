@@ -32,6 +32,25 @@ class _LogState extends State<Log> {
 
   // Once signed in, return the UserCredential
    await FirebaseAuth.instance.signInWithCredential(credential);
+
+   final user = FirebaseAuth.instance.currentUser!;
+                        var  UID = user.uid;
+                        var name = user.displayName;
+                       var email_id = user.email;
+                       var phone = user.phoneNumber;
+                        var   photo = user.photoURL.toString();
+                          FirebaseFirestore.instance
+                              .collection('Users')
+                              .doc(UID)
+                              .set({
+                                'Name':name,
+                                'Email':email_id,
+                                'Image':photo,
+                                'Phone Number':phone
+
+                              });
+
+   
    
 }
 
@@ -100,6 +119,8 @@ class _LogState extends State<Log> {
                                     .signInWithEmailAndPassword(
                                         email: email.text,
                                         password: pass.text);
+
+                                        
 
                               Navigator.push(
                                     context, 

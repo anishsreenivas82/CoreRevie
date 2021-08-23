@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shoppingapp/pages/signup.dart';
 
 String name = '';
@@ -41,7 +42,10 @@ class _ProfileState extends State<Profile> {
       builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot){
       if(snapshot.connectionState == ConnectionState.done){
         name = snapshot.data!['Name'];
-        ph = snapshot.data!['Phone Number'];
+        if(snapshot.data!['Phone Number'] != null){
+          ph = snapshot.data!['Phone Number'];
+        }
+        
         email_id = snapshot.data!['Email'];
         return SafeArea(
         child: Scaffold(
@@ -100,18 +104,22 @@ class _ProfileState extends State<Profile> {
                       children: 
                         [Wrap(
                           children: 
-                            [Text(
-                              email_id,
-                              style: TextStyle(fontSize: 20),
+                            [Container(
+                              width: width*0.7,
+                              child: Text(
+                                email_id,
+                                style: TextStyle(fontSize: 18),
+                                textAlign: TextAlign.end,
+                              ),
                             ),
                           ],
                         ),
                         SizedBox(height: height*0.05,),
                         Wrap(
-                          children: 
+                          children:
                           [Text(
                                             ph,
-                                            style: TextStyle(fontSize: 20),
+                                            style: TextStyle(fontSize: 15),
                                             
                           ),
                         ],
@@ -127,7 +135,7 @@ class _ProfileState extends State<Profile> {
                 ),
             ))));}
 
-            return Scaffold(body: CircularProgressIndicator(),);
+            return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
       });
   }
 }

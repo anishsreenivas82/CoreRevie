@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shoppingapp/pages/cart.dart';
 import 'package:shoppingapp/pages/electronics.dart';
 import 'package:shoppingapp/pages/favourites.dart';
@@ -13,6 +14,9 @@ import 'package:shoppingapp/pages/mens_clothing.dart';
 import 'package:shoppingapp/pages/profile.dart';
 import 'package:shoppingapp/pages/signup.dart';
 import 'package:shoppingapp/pages/women.dart';
+
+
+final GoogleSignIn _googleSignIn = new GoogleSignIn();
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -107,9 +111,12 @@ CollectionReference user_collection = FirebaseFirestore.instance.collection('Use
                 // Update the state of the app.
                 // ...
                 await FirebaseAuth.instance.signOut();
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (context) => Log()));
-              },
+                _googleSignIn.disconnect();
+               Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Log()));
+                              },
             ),
 
           ],

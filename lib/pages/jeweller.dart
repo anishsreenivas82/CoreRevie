@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shoppingapp/pages/cart.dart';
 
 
@@ -252,7 +253,7 @@ class _jewelState extends State<jewel> {
               ),
             );
           }
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
+          return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
         });
   }
 }

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:http/http.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shoppingapp/pages/cart.dart';
 
 
@@ -163,11 +164,11 @@ class _WomenClothesState extends State<WomenClothes> {
                                           child: Row(
                                             children: [
                                               IconButton(
-                                                  onPressed: () {
+                                                  onPressed: (){
                                                     int id= women[index]["id"];
                                                     final user = FirebaseAuth.instance.currentUser!;
                                                     var UID = user.uid;
-                                                     user_collection
+                                                      user_collection
                                                     .doc(UID).collection('Cart').
                                                     doc(id.toString())
                                                     .set({
@@ -238,7 +239,7 @@ class _WomenClothesState extends State<WomenClothes> {
               ),
             );
           }
-          return Scaffold(body: Center(child: CircularProgressIndicator()));
+          return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
         });
   }
 }

@@ -3,10 +3,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:lottie/lottie.dart';
 import 'package:shoppingapp/Dashboard.dart';
+import 'package:shoppingapp/pages/electronics.dart';
 import 'package:shoppingapp/pages/favourites.dart';
 
-double sum = 0;
+
 
 class Cart extends StatefulWidget {
   const Cart({Key? key}) : super(key: key);
@@ -16,6 +18,16 @@ class Cart extends StatefulWidget {
 }
 
 class _CartState extends State<Cart> {
+
+  double sum = 0;
+
+  
+
+
+
+
+
+
   // Future<double> total(double i) async {
   //      var uid = FirebaseAuth.instance.currentUser!.uid;
 
@@ -37,7 +49,29 @@ class _CartState extends State<Cart> {
   @override
   void initState() {
     super.initState();
-    var uid = FirebaseAuth.instance.currentUser!.uid;
+
+     var uid = FirebaseAuth.instance.currentUser!.uid;
+    double i = 0;
+
+    FirebaseFirestore.instance
+        .collection('Users')
+        .doc(uid)
+        .collection('Cart')
+        .get()
+        .then((QuerySnapshot querySnapshot) async {
+      querySnapshot.docs.forEach((doc) {
+        i = i + doc['Price'];
+      });
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(uid)
+          .collection('Total')
+          .doc('Total')
+          .set({'Total Price': i});
+    });
+    
+
+    
     FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
@@ -72,10 +106,17 @@ class _CartState extends State<Cart> {
     });
   }
 
+
+        final Stream<QuerySnapshot> cart_items = FirebaseFirestore.instance
+        .collection('Users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .collection('Cart')
+        .snapshots();
+
   @override
   Widget build(BuildContext context) {
-    var uid = FirebaseAuth.instance.currentUser!.uid;
 
+     var uid = FirebaseAuth.instance.currentUser!.uid;
     double i = 0;
 
     FirebaseFirestore.instance
@@ -95,6 +136,12 @@ class _CartState extends State<Cart> {
           .set({'Total Price': i});
     });
 
+    
+
+   
+
+    
+
     // setState(() {
     //   total(sum);
     // });
@@ -106,11 +153,7 @@ class _CartState extends State<Cart> {
 
     // CollectionReference user_collection = FirebaseFirestore.instance.collection('Users');
 
-    final Stream<QuerySnapshot> cart_items = FirebaseFirestore.instance
-        .collection('Users')
-        .doc(uid)
-        .collection('Cart')
-        .snapshots();
+
     return Scaffold(
       backgroundColor: Colors.grey[100],
       appBar: AppBar(
@@ -130,17 +173,20 @@ class _CartState extends State<Cart> {
       body: StreamBuilder<QuerySnapshot>(
         stream: cart_items,
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+
+         
           if (snapshot.hasError) {
             return Text('Something went wrong');
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Text("Loading");
+            return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
           }
 
           if (sum != 0) {
             return new ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                
                 Map<String, dynamic> data =
                     document.data() as Map<String, dynamic>;
                 // sum = sum + data['Price'];
