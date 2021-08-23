@@ -99,7 +99,7 @@ class _HomeState extends State<Men> {
                               "SwiftCart",
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: 'Satisfy',
+                                
                                 color: Colors.white,
                                 fontSize: 40,
                               ),
@@ -150,7 +150,7 @@ class _HomeState extends State<Men> {
                                           child: Text(
                                             men[index]["title"],
                                             style: TextStyle(
-                                                fontFamily: 'STIXTwoText',
+                                                
                                                 color: Colors.black,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w700),
@@ -168,7 +168,7 @@ class _HomeState extends State<Men> {
                                                   men[index]["price"]
                                                       .toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'STIXTwoText',
+                                                  
                                                   color: Colors.black,
                                                   fontSize: 15,
                                                   fontWeight:

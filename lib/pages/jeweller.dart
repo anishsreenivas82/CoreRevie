@@ -84,7 +84,7 @@ class _jewelState extends State<jewel> {
                               
                               textAlign: TextAlign.center,
                               style: TextStyle(
-                                fontFamily: 'Satisfy',
+                                
                                 color: Colors.white,
                                 fontSize: 40,
                               ),
@@ -137,7 +137,7 @@ class _jewelState extends State<jewel> {
                                           child: Text(
                                             jewelery[index]["title"],
                                             style: TextStyle(
-                                                fontFamily: 'STIXTwoText',
+                                                
                                                 color: Colors.black,
                                                 fontSize: 15,
                                                 fontWeight: FontWeight.w700),
@@ -155,7 +155,7 @@ class _jewelState extends State<jewel> {
                                                   jewelery[index]["price"]
                                                       .toString(),
                                               style: TextStyle(
-                                                  fontFamily: 'STIXTwoText',
+                                                  
                                                   color: Colors.black,
                                                   fontSize: 15,
                                                   fontWeight:
