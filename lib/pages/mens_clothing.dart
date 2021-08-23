@@ -113,159 +113,151 @@ class _HomeState extends State<Men> {
                       itemCount: 4,
                       itemBuilder: (BuildContext context, index) {
                         return Padding(
-                          padding: EdgeInsets.all(height * 0.004),
-                          child: Card(
-                            elevation: height * 0.005,
-                            child: Container(
-                                height: height * 0.35,
-                                width: width * 0.7,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: Container(
-                                          height: height * 0.3,
-                                          width: width * 0.41,
-                                          decoration: BoxDecoration(
-                                            image: new DecorationImage(
-                                              image: NetworkImage(
-                                                  men[index]["image"]),
-                                              fit: BoxFit.cover,
-                                            ),
+                          padding: EdgeInsets.all(height * 0.01),
+                          child: Container(
+                              height: height * 0.35,
+                              width: width * 0.7,
+                              decoration: BoxDecoration(
+                                color: Colors.amber[100],
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Container(
+                                        height: height * 0.3,
+                                        width: width * 0.41,
+                                        decoration: BoxDecoration(
+                                          image: new DecorationImage(
+                                            image: NetworkImage(
+                                                men[index]["image"]),
+                                            fit: BoxFit.cover,
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
-                                        width: width * 0.05,
-                                      ),
-                                      Column(
-                                        children: [
-                                          Container(
-                                            height: height * 0.1,
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.05,
+                                    ),
+                                    Column(
+                                      children: [
+                                        Container(
+                                          height: height * 0.1,
+                                          width: width * 0.30,
+                                          child: Text(
+                                            men[index]["title"],
+                                            style: TextStyle(
+                                                fontFamily: 'STIXTwoText',
+                                                color: Colors.black,
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w700),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.025,
+                                        ),
+                                        Center(
+                                          child: Container(
+                                            height: height * 0.025,
                                             width: width * 0.30,
                                             child: Text(
-                                              men[index]["title"],
+                                              '\$ ' +
+                                                  men[index]["price"]
+                                                      .toString(),
                                               style: TextStyle(
                                                   fontFamily: 'STIXTwoText',
                                                   color: Colors.black,
                                                   fontSize: 15,
-                                                  fontWeight: FontWeight.w700),
+                                                  fontWeight:
+                                                      FontWeight.bold),
                                             ),
                                           ),
-                                          SizedBox(
-                                            height: height * 0.025,
-                                          ),
-                                          Center(
-                                            child: Container(
-                                              height: height * 0.025,
-                                              width: width * 0.30,
-                                              child: Text(
-                                                '\$ ' +
-                                                    men[index]["price"]
-                                                        .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: 'STIXTwoText',
+                                        ),
+                                        SizedBox(
+                                          height: height * 0.05,
+                                        ),
+                                        Center(
+                                          child: Row(
+                                            children: [
+                                              IconButton(
+                                                  onPressed: () {
+                                                    var uid = FirebaseAuth
+                                                        .instance
+                                                        .currentUser!
+                                                        .uid;
+                                                    FirebaseFirestore.instance
+                                                        .collection('Users')
+                                                        .doc(uid)
+                                                        .collection('Cart')
+                                                        .doc(men[index]['id'].toString())
+                                                        .set({
+                                                      'Name': men[index]
+                                                          ['title'],
+                          
+                                                        'Price':men[index]['price'],
+                                                        'Image':men[index]['image'],
+                          
+                          
+                          
+                                                    });
+                          
+                                                    Fluttertoast.showToast(
+                            msg: "Added To Cart",
+                            toastLength: Toast.LENGTH_LONG,
+                            gravity: ToastGravity.BOTTOM,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: Colors.white,
+                            textColor: Colors.red,
+                            fontSize: 16.0);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons.add_shopping_cart,
                                                     color: Colors.black,
-                                                    fontSize: 15,
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                                  )),
+                                              SizedBox(
+                                                width: width * 0.001,
                                               ),
-                                            ),
+                                              IconButton(
+                                                  onPressed: () {
+                          
+                                                    int id= men[index]["id"];
+                                                  final user = FirebaseAuth.instance.currentUser!;
+                                                  var uid = user.uid;
+                                                   user_collection
+                                                  .doc(uid).collection('Favourites').
+                                                  doc(id.toString())
+                                                  .set({
+                                                    'Category':men[index]["category"],
+                                                    'Price':men[index]["price"],
+                                                    'Name': men[index]["title"],
+                                                    'Image': men[index]["image"],        
+                                                    });
+                                                    Fluttertoast.showToast(
+                                                  msg: "Added To Favourites",
+                                                  toastLength: Toast.LENGTH_LONG,
+                                                  gravity: ToastGravity.BOTTOM,
+                                                  timeInSecForIosWeb: 1,
+                                                  backgroundColor: Color(0xff7beed9),
+                                                  textColor: Colors.black,
+                                                  fontSize: 16.0);
+                                                  },
+                                                  icon: Icon(
+                                                    Icons
+                                                        .thumb_up_sharp,
+                                                    color: Colors.black,
+                                                  )),
+                                             
+                                            ],
                                           ),
-                                          SizedBox(
-                                            height: height * 0.05,
-                                          ),
-                                          Center(
-                                            child: Row(
-                                              children: [
-                                                IconButton(
-                                                    onPressed: () {
-                                                      var uid = FirebaseAuth
-                                                          .instance
-                                                          .currentUser!
-                                                          .uid;
-                                                      FirebaseFirestore.instance
-                                                          .collection('Users')
-                                                          .doc(uid)
-                                                          .collection('Cart')
-                                                          .doc(men[index]['id'].toString())
-                                                          .set({
-                                                        'Name': men[index]
-                                                            ['title'],
-                            
-                                                          'Price':men[index]['price'],
-                                                          'Image':men[index]['image'],
-                            
-                            
-                            
-                                                      });
-                            
-                                                      Fluttertoast.showToast(
-                              msg: "Added To Cart",
-                              toastLength: Toast.LENGTH_LONG,
-                              gravity: ToastGravity.BOTTOM,
-                              timeInSecForIosWeb: 1,
-                              backgroundColor: Colors.white,
-                              textColor: Colors.red,
-                              fontSize: 16.0);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons.add_shopping_cart,
-                                                      color: Colors.black,
-                                                    )),
-                                                SizedBox(
-                                                  width: width * 0.001,
-                                                ),
-                                                IconButton(
-                                                    onPressed: () {
-                            
-                                                      int id= men[index]["id"];
-                                                    final user = FirebaseAuth.instance.currentUser!;
-                                                    var uid = user.uid;
-                                                     user_collection
-                                                    .doc(uid).collection('Favourites').
-                                                    doc(id.toString())
-                                                    .set({
-                                                      'Category':men[index]["category"],
-                                                      'Price':men[index]["price"],
-                                                      'Name': men[index]["title"],
-                                                      'Image': men[index]["image"],        
-                                                      });
-                                                      Fluttertoast.showToast(
-                                                    msg: "Added To Favourites",
-                                                    toastLength: Toast.LENGTH_LONG,
-                                                    gravity: ToastGravity.BOTTOM,
-                                                    timeInSecForIosWeb: 1,
-                                                    backgroundColor: Color(0xff7beed9),
-                                                    textColor: Colors.black,
-                                                    fontSize: 16.0);
-                                                    },
-                                                    icon: Icon(
-                                                      Icons
-                                                          .thumb_up_sharp,
-                                                      color: Colors.black,
-                                                    )),
-                                                IconButton(
-                                                    onPressed: () {},
-                                                    icon: Icon(
-                                                      Icons.next_plan,
-                                                      color: Colors.black,
-                                                    )),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  ),
-                                )),
-                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              )),
                         );
                       }),
                 ),

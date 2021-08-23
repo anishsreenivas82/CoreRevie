@@ -276,6 +276,7 @@ Future wait(int seconds) {
                   padding: EdgeInsets.fromLTRB(
                       width * 0.001, height * 0.02, width * 0.001, 0),
                   child: Card(
+                    color: Colors.amber[100],
                     elevation: 4,
                     child: Container(
                       height: height * 0.30,
