@@ -15,6 +15,6 @@ Shopping App
 - There are a few things that have to be changed. The quantity of products is one of them. In the future I would like to fix these bugs and make the app even better.
 
 ## Video Link
--https://photos.app.goo.gl/Xi7QFZzsedgsuxPX7
+https://photos.app.goo.gl/tcVhAUdcajkJJ1ew5
 
 
