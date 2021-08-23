@@ -21,39 +21,21 @@ class _CartState extends State<Cart> {
 
   double sum = 0;
 
-  
+  bool check = false;
+
+
+Future wait(int seconds) {
+  return new Future.delayed(Duration(seconds: seconds), () => {});
+}
 
 
 
+  Future<void> setup()async {
 
-
-
-  // Future<double> total(double i) async {
-  //      var uid = FirebaseAuth.instance.currentUser!.uid;
-
-  //      i = 0;
-  //     FirebaseFirestore.instance.collection('Users').doc(uid).collection('Cart').get().then((querySnapshot){
-  //       querySnapshot.docs.forEach((document) {
-
-  //         setState(() {
-  //           i = i + document.get('Name');
-  //         });
-  //        });
-  //     });
-
-  //     print(i);
-
-  //     return i;
-
-  //   }
-  @override
-  void initState() {
-    super.initState();
-
-     var uid = FirebaseAuth.instance.currentUser!.uid;
+         var uid = FirebaseAuth.instance.currentUser!.uid;
     double i = 0;
 
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
         .collection('Cart')
@@ -72,7 +54,7 @@ class _CartState extends State<Cart> {
     
 
     
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
         .collection('Users')
         .doc(uid)
         .collection('Total')
@@ -101,10 +83,99 @@ class _CartState extends State<Cart> {
 
         setState(() {
           sum = snap['Total Price'];
+          check = true;
         });
       }
     });
+
   }
+
+  
+
+
+
+
+
+
+  // Future<double> total(double i) async {
+  //      var uid = FirebaseAuth.instance.currentUser!.uid;
+
+  //      i = 0;
+  //     FirebaseFirestore.instance.collection('Users').doc(uid).collection('Cart').get().then((querySnapshot){
+  //       querySnapshot.docs.forEach((document) {
+
+  //         setState(() {
+  //           i = i + document.get('Name');
+  //         });
+  //        });
+  //     });
+
+  //     print(i);
+
+  //     return i;
+
+  //   }
+  // @override
+  // void initState() {
+  //   super.initState();
+
+  //   setup();
+
+    //  var uid = FirebaseAuth.instance.currentUser!.uid;
+    // double i = 0;
+
+    // FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc(uid)
+    //     .collection('Cart')
+    //     .get()
+    //     .then((QuerySnapshot querySnapshot) async {
+    //   querySnapshot.docs.forEach((doc) {
+    //     i = i + doc['Price'];
+    //   });
+    //   await FirebaseFirestore.instance
+    //       .collection('Users')
+    //       .doc(uid)
+    //       .collection('Total')
+    //       .doc('Total')
+    //       .set({'Total Price': i});
+    // });
+    
+
+    
+    // FirebaseFirestore.instance
+    //     .collection('Users')
+    //     .doc(uid)
+    //     .collection('Total')
+    //     .doc('Total')
+    //     .get()
+    //     .then((DocumentSnapshot snap) {
+    //   if (snap.exists) {
+    //     double i = 0;
+
+    //     FirebaseFirestore.instance
+    //         .collection('Users')
+    //         .doc(uid)
+    //         .collection('Cart')
+    //         .get()
+    //         .then((QuerySnapshot querySnapshot) {
+    //       querySnapshot.docs.forEach((doc) {
+    //         i = i + doc['Price'];
+    //       });
+    //       FirebaseFirestore.instance
+    //           .collection('Users')
+    //           .doc(uid)
+    //           .collection('Total')
+    //           .doc('Total')
+    //           .set({'Total Price': i});
+    //     });
+
+    //     setState(() {
+    //       sum = snap['Total Price'];
+    //     });
+    //   }
+    // });
+  // }
 
 
         final Stream<QuerySnapshot> cart_items = FirebaseFirestore.instance
@@ -115,6 +186,10 @@ class _CartState extends State<Cart> {
 
   @override
   Widget build(BuildContext context) {
+
+    setup();
+
+    
 
      var uid = FirebaseAuth.instance.currentUser!.uid;
     double i = 0;
@@ -180,6 +255,11 @@ class _CartState extends State<Cart> {
           }
 
           if (snapshot.connectionState == ConnectionState.waiting) {
+            return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
+          }
+
+          if(check == false)
+          {
             return Scaffold(body: Container(height:height*0.7,width: width,child: Center(child: Lottie.asset('assets/loading.json'))));
           }
 
